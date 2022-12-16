@@ -1,13 +1,14 @@
 package org.example;
 import java.util.*;
-import org.example.model.Produit;
+import org.example.entities.Produit;
+import org.example.services.ProduitService;
 
 import javax.persistence.*;
-import javax.sound.midi.Soundbank;
-import java.sql.SQLOutput;
 
 public class Main {
     public static void main(String[] args) {
+
+        // without using service
         System.out.println("Hello world!");
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("Tp1_jpa_articles_p");
         EntityManager em = emf.createEntityManager();
@@ -57,5 +58,34 @@ public class Main {
 
         em.close();
         emf.close();
+
+        // use the service
+        ProduitService ps = new ProduitService();
+        ps.begin();
+        ps.create(new Produit("peugeot","ref truc",new Date("2015/01/02"),1200,42));
+        ps.create(new Produit("citroen","ref machin",new Date(),1244,1));
+        ps.create(new Produit("fiat","ref bidule",new Date("2020/07/12"),12000,45));
+        ps.create(new Produit("izuzu","ref chouette",new Date(),2400,120));
+        ps.envoie();
+
+        ps.begin();
+        Produit p = ps.findById(2);
+        System.out.println(p.toString());
+        ps.envoie();
+
+        ps.begin();
+        ps.delete(ps.findById(3));
+        ps.envoie();
+
+        ps.begin();
+        p = ps.findById(4);
+        if(p != null)
+        {
+            p.setMarque("Carrier");
+            ps.update(p);
+        }
+        System.out.println(p.toString());
+        ps.envoie();
+        ps.close();
     }
 }

@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,7 +28,7 @@ public class Produit {
     }
 
     public Produit(){};
-    public Produit(int id, String marque, String reference, Date dataAchat, double prix, int stock) {
+    public Produit(String marque, String reference, Date dataAchat, double prix, int stock) {
         this.id = id;
         this.marque = marque;
         this.reference = reference;
